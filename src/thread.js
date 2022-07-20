@@ -1,15 +1,20 @@
-import Any        from './any.js'
-import Dispatcher from './dispatcher.js'
-import { Worker } from 'worker_threads'
+import Any               from './any.js'
+import Dispatcher        from './dispatcher.js'
+import { Worker }        from 'worker_threads'
+import { fileURLToPath } from 'url'
+import path              from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 class Thread {
-    #pathname = './src/worker.js'
+    #pathname = __dirname + '/worker.js'
 
     static autoStart = true
     static log = false
     static logger = console
 
-    constructor(fn, ...args) {
+    constructor(fn, args) {
         this.fn = fn
         this.args = args
         if (Thread.autoStart) return this.run()
