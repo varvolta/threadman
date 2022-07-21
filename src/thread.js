@@ -13,9 +13,11 @@ class Thread {
     constructor(fn, args, { autoStart, autoStop } = {}) {
         this.fn = fn
         this.args = args
-        this.autoStart = autoStart
-        this.autoStop = autoStop
-        if (autoStart !== undefined ? autoStart : Dispatcher.config.threads.autoStart) return this.run()
+        this.autoStart = autoStart ?? Dispatcher.config.threads.autoStart
+        this.autoStop = autoStop ?? Dispatcher.config.threads.autoStop
+
+        if (this.autoStart)
+            return this.run()
     }
 
     run() {
@@ -36,22 +38,29 @@ class Thread {
     }
 
     #message(message, resolve) {
-        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
-        if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop) this.stop()
+        if (Dispatcher.config.logs.enabled)
+            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message);
+
+        if (this.autoStop)
+            this.stop()
+        
         resolve(message)
     }
 
     #error(error, reject) {
-        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
+        if (Dispatcher.config.logs.enabled)
+            Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error);
+
         this.stop()
         reject(error)
     }
 
     #exit(code, reject) {
-        if (code !== 0) {
-            this.stop()
-            reject(new Error(`stopped with ${code} exit code`))
-        }
+        if (code === 0)
+            return;
+
+        this.stop()
+        reject(new Error(`stopped with exit code: ${code}`))
     }
 }
 
