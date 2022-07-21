@@ -1,5 +1,5 @@
 class Any {
-    static encode(data, prefix) { // do not use prefix argument from outside call
+    static encode(data, prefix) {
         function unicode_escape(c) {
             let s = c.charCodeAt(0).toString(16)
             while (s.length < 4) s = '0' + s
@@ -8,7 +8,7 @@ class Any {
 
         if (!prefix) prefix = ''
         switch (typeof data) {
-            case 'object':  // object, array or null
+            case 'object':
                 if (data == null) return 'null'
                 let i, pieces = [], before, after
                 let indent = prefix + '    '

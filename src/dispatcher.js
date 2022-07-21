@@ -2,14 +2,17 @@ import os from 'os'
 
 class Dispatcher {
 
-    static log = false
-    static logger = console
     static threads = []
+
     static config = {
         threads: {
             maxConcurrent: os.cpus().length,
             autoStart: true,
             autoStop: true
+        },
+        logs: {
+            enabled: false,
+            logger: console
         }
     }
 

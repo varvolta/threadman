@@ -36,13 +36,13 @@ class Thread {
     }
 
     #message(message, resolve) {
-        Dispatcher.log && Dispatcher.logger.info('[ THREADMAN THREAD DONE ]', message)
+        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
         if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop) this.stop()
         resolve(message)
     }
 
     #error(error, reject) {
-        Dispatcher.log && Dispatcher.logger.error('[ THREADMAN THREAD ERROR ]', error)
+        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
         this.stop()
         reject(error)
     }

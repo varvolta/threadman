@@ -6,4 +6,4 @@ let c
 
 new Thread((a, b) => a + b, [a, b]).then(data => c = data)
 
-setTimeout(() => Dispatcher.logger.log('[ THREADMAN TEST RESULT ]', c === a + b ? 'Passed' : 'Error', '- Result:', c), 100)
+setTimeout(() => Dispatcher.config.logs.logger.log('[ THREADMAN TEST RESULT ]', c === a + b ? 'Passed' : 'Error', '- Result:', c), 100)
