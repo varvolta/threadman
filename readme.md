@@ -16,7 +16,7 @@ npm i threadman
 
 # Syntax
 
-```
+```js
 new Thread(fn, [...passedVariables]).then(result)
 ```
 
@@ -24,7 +24,7 @@ new Thread(fn, [...passedVariables]).then(result)
 
 # Basic usage
 
-```
+```js
 import { Thread }     from 'threadman'
 
 let number = 10
@@ -41,7 +41,7 @@ After you get the result you can access main scope again and reassign variables.
 
 # Config
 
-```
+```js
 import { Dispatcher } from 'treadman'
 
 // Automatically starts the thread when an instance is created.
