@@ -27,3 +27,7 @@ new Thread(number => {
 })
 ```
 After you get the result you can access main scope again and reassign variables.
+
+<br />
+
+# **Documentation to be filled soon**
