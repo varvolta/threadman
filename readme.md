@@ -35,7 +35,7 @@ new Thread(number => {
     number = result
 })
 ```
-After you get the result you can access main scope again and reassign variables.
+After you get the result you can access main scope again and reassign variables. (ES5 imports for now)
 
 <br />
 
