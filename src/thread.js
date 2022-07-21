@@ -10,14 +10,12 @@ const __dirname = path.dirname(__filename)
 class Thread {
     #pathname = __dirname + '/worker.js'
 
-    static autoStart = true
-    static log = false
-    static logger = console
-
-    constructor(fn, args) {
+    constructor(fn, args, { autoStart, autoStop } = {}) {
         this.fn = fn
         this.args = args
-        if (Thread.autoStart) return this.run()
+        this.autoStart = autoStart
+        this.autoStop = autoStop
+        if (autoStart !== undefined ? autoStart : Dispatcher.config.threads.autoStart) return this.run()
     }
 
     run() {
@@ -38,13 +36,13 @@ class Thread {
     }
 
     #message(message, resolve) {
-        Thread.log && Thread.logger.info('[ THREADMAN THREAD DONE ]', message)
-        this.stop()
+        Dispatcher.log && Dispatcher.logger.info('[ THREADMAN THREAD DONE ]', message)
+        if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop) this.stop()
         resolve(message)
     }
 
     #error(error, reject) {
-        Thread.log && Thread.logger.error('[ THREADMAN THREAD ERROR ]', error)
+        Dispatcher.log && Dispatcher.logger.error('[ THREADMAN THREAD ERROR ]', error)
         this.stop()
         reject(error)
     }
