@@ -2,7 +2,7 @@
 
 <br />
 
-Create and execute tasks in real cpu threads other than main one.
+Create and execute tasks in real cpu threads other than the main one.
 
 <br />
 
