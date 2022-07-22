@@ -34,6 +34,15 @@ new Thread(number => {
 }, [number]).run().then(result => {
     number = result
 })
+
+// Or a callback function can be passed as third argument like below
+
+new Thread(number => {
+    return number + 20
+}, [number], result => {
+    number = result
+}).run()
+
 ```
 After you get the result you can access main scope again and reassign variables. (ES5 imports for now)
 

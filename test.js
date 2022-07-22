@@ -3,8 +3,11 @@ import { Dispatcher, Thread } from './index.js'
 const fn = (a, b) => a + b
 const a = 123
 const b = 456
-let c
+const args = [a, b]
+let result = 0
+const callback = data => result += data
 
-new Thread(fn, [a, b]).run().then(data => c = data)
+new Thread(fn, args).run().then(callback)
+new Thread(fn, args, callback).run()
 
-setTimeout(() => Dispatcher.config.logs.logger.log('[ THREADMAN TEST RESULT ]', c === a + b ? 'Passed' : 'Error', '- Result:', c), 100)
+setTimeout(() => Dispatcher.config.logs.logger.log('[ THREADMAN TEST RESULT ]', result === a + b + a + b ? 'Passed' : 'Error', '- Result:', result), 200)
