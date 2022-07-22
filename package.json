@@ -1,6 +1,6 @@
 {
   "name": "threadman",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "Real threads made easy",
   "main": "index.js",
   "type": "module",
@@ -13,7 +13,11 @@
     "url": "git+https://github.com/varvolta/threadman.git"
   },
   "keywords": [
-    "threads"
+    "thread",
+    "threads",
+    "worker",
+    "process",
+    "spawn"
   ],
   "author": "Vahe Arzumanyan",
   "license": "ISC",

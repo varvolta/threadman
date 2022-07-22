@@ -3,6 +3,7 @@
 <br />
 
 Create and execute tasks in real cpu threads other than the main one. (ES5 imports for now)
+Threadman doesn't use any dependencies. It's based on workers.
 
 <br />
 
