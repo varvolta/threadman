@@ -6,7 +6,7 @@ let message
 
 if (workerData?.fn) {
     let args = workerData.args ? Any.decode(workerData.args) : []
-    message = eval(Any.decode(workerData.fn)(...args))
+    message = await Any.decode(workerData.fn)(...args)
 }
 
 parentPort.postMessage(message)
