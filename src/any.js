@@ -33,6 +33,8 @@ class Any {
                     .replace(/[\x00-\x19]/g, unicode_escape)
                 return '"' + data + '"'
             default:
+                if (data.hasOwnProperty('toString'))
+                    return new Error(`stopped code injection`)
                 return String(data).replace(/\n/g, '\n' + prefix)
         }
     }
