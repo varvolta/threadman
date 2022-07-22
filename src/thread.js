@@ -10,12 +10,10 @@ const __dirname = path.dirname(__filename)
 class Thread {
     #pathname = __dirname + '/worker.js'
 
-    constructor(fn, args, { autoStart, autoStop } = {}) {
+    constructor(fn, args, { autoStop } = {}) {
         this.fn = fn
         this.args = args
-        this.autoStart = autoStart
         this.autoStop = autoStop
-        if (autoStart !== undefined ? autoStart : Dispatcher.config.threads.autoStart) return this.run()
     }
 
     run() {

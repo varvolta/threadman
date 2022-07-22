@@ -7,7 +7,6 @@ class Dispatcher {
     static config = {
         threads: {
             maxConcurrent: os.cpus().length,
-            autoStart: true,
             autoStop: true
         },
         logs: {

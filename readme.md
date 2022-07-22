@@ -31,7 +31,7 @@ let number = 10
 
 new Thread(number => {
     return number + 20
-}, [number]).then(result => {
+}, [number]).run().then(result => {
     number = result
 })
 ```
@@ -43,10 +43,6 @@ After you get the result you can access main scope again and reassign variables.
 
 ```js
 import { Dispatcher } from 'treadman'
-
-// Automatically starts the thread when an instance is created.
-// Defaults to 'true'.
-Dispatcher.config.autoStart = true
 
 // Automatically stops the thread after returning the result.
 // Defaults to 'true'.
