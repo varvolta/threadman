@@ -17,11 +17,11 @@ npm i threadman
 # Syntax
 
 ```js
-new Thread(fn, [...passedVariables]).run().then(callback)
+new Thread(fn, [...args]).run().then(callback)
 
 // Or
 
-new Thread(fn, [...passedVariables], callback).run()
+new Thread(fn, [...args], callback).run()
 ```
 
 <br />
