@@ -34,22 +34,24 @@ class Thread {
     }
 
     #message(message, resolve) {
-        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
-        if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop) this.stop()
+        if (Dispatcher.config.logs.enabled)
+            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
+        if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop)
+            this.stop()
         resolve(message)
     }
 
     #error(error, reject) {
-        Dispatcher.config.logs.enabled && Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
+        if (Dispatcher.config.logs.enabled)
+            Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
         this.stop()
         reject(error)
     }
 
     #exit(code, reject) {
-        if (code !== 0) {
-            this.stop()
-            reject(new Error(`stopped with ${code} exit code`))
-        }
+        if (code === 0) return
+        this.stop()
+        reject(new Error(`stopped with ${code} exit code`))
     }
 }
 
