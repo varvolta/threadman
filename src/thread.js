@@ -49,12 +49,19 @@ class Thread {
         Dispatcher.unregister(this)
         this.running = false
     }
+
     on(event, fn) {
         this.#events[event].push(fn)
     }
 
     off(event, fn) {
-        this.#events[event].splice(this.events[event].indexOf(fn), 1)
+        const index = this.events[event].indexOf(fn)
+        if (index !== -1)
+            this.#events[event].splice(index, 1)
+    }
+
+    offAll() {
+        Object.keys(this.#events).forEach(key => this.#events[key] = [])
     }
 
     fire(event, ...args) {

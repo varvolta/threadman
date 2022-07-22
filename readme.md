@@ -82,9 +82,9 @@ thread.on('stop', onStopFn)
 thread.on('done', onDoneFn)
 thread.on('error', onErrorFn)
 
-thread.run(callback)
-// Or
 thread.run().then(callback)
+// Or
+thread.run(callback)
 ```
 
 Unsubscribe with
@@ -94,6 +94,12 @@ thread.off('start', onStartFn)
 thread.off('stop', onStopFn)
 thread.off('done', onDoneFn)
 thread.off('error', onErrorFn)
+```
+
+Unsubscribe from all events
+
+```js
+thread.offAll()
 ```
 
 # **Documentation to be filled more soon**
