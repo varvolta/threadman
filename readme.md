@@ -75,12 +75,16 @@ Dispatcher.config.logs.logger = console
 Subscribing to events
 
 ```js
-const thread = new Thread(fn, [...args], callback).run()
+const thread = new Thread(fn, [...args])
 
 thread.on('start', onStartFn)
 thread.on('stop', onStopFn)
 thread.on('done', onDoneFn)
 thread.on('error', onErrorFn)
+
+thread.run(callback)
+// Or
+thread.run().then(callback)
 ```
 
 Unsubscribe with

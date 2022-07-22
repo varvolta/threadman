@@ -7,7 +7,10 @@ const args = [a, b]
 let data = 0
 const callback = result => data += result
 
-new Thread(fn, args).run().then(callback)
+const thread = new Thread(fn, args)
 new Thread(fn, args).run(callback)
+
+thread.on('stop', (result) => console.log('onStop', result))
+thread.run().then(callback)
 
 setTimeout(() => Dispatcher.config.logs.logger.log('[ THREADMAN TEST RESULT ]', data === a + b + a + b ? 'Passed' : 'Error', '- Result:', data), 200)
