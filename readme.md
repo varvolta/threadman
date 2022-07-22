@@ -68,7 +68,7 @@ After you get the result you can access main scope again and reassign variables.
 # Config
 
 ```js
-import { Dispatcher } from 'treadman'
+import { Dispatcher } from 'threadman'
 
 // Automatically stops the thread after returning the result.
 // Defaults to 'true'.
