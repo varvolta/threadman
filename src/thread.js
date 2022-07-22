@@ -10,75 +10,94 @@ const __dirname = path.dirname(__filename)
 class Thread {
     #pathname = __dirname + '/worker.js'
 
-    events = {
-        onStart: [],
-        onDone: [],
-        onStop: []
+    #events = {
+        start: [],
+        stop: [],
+        done: [],
+        error: []
     }
 
-    constructor(fn, args, callback, { autoStop } = {}) {
+    constructor(fn, args, { autoStop, delay } = {}) {
         this.fn = fn
         this.args = args
-        this.callback = callback
         this.autoStop = autoStop
+        this.delay = delay
     }
 
-    run() {
+    run(callback) {
+        if (this.running) return new Error(`thread already running`)
+        this.running = true
+        this.callback = callback
         return new Promise((resolve, reject) => {
-            const worker = new Worker(this.#pathname, { workerData: { fn: Any.encode(this.fn), args: Any.encode(this.args) } })
-            worker.once('message', message => this.#message(message, resolve))
-            worker.on('error', error => this.#error(error, reject))
-            worker.on('exit', code => this.#exit(code, reject))
-            this.worker = worker
-            Dispatcher.threads.push(this)
-            this.fireEvent('onStart')
+            if (this.delay) {
+                setTimeout(() => this.#createWorker(resolve, reject), this.delay)
+            } else {
+                this.#createWorker(resolve, reject)
+            }
         })
     }
 
-    stop() {
+    stop(result, error) {
         if (this.worker === undefined) return
         this.worker.terminate()
         this.worker = undefined
-        Dispatcher.threads.splice(Dispatcher.threads.find(thread => thread === this), 1)
-        this.fireEvent('onStop')
+        if (error) {
+            this.fire('error', error)
+        } else {
+            this.fire('stop', result)
+        }
+        Dispatcher.unregister(this)
+        this.running = false
+    }
+    on(event, fn) {
+        this.#events[event].push(fn)
     }
 
-    addEventListener(event, fn) {
-        this.events[event].push(fn)
+    off(event, fn) {
+        this.#events[event].splice(this.events[event].indexOf(fn), 1)
     }
 
-    removeEventListener(event, fn) {
-        this.events[event].splice(this.events[event].indexOf(fn), 1)
+    fire(event, ...args) {
+        this.#events[event].forEach(fn => fn(...args))
     }
 
-    fireEvent(event, args) {
-        this.events[event].forEach(fn => fn(args))
+    #createWorker(resolve, reject) {
+        const worker = new Worker(this.#pathname, { workerData: { fn: Any.encode(this.fn), args: Any.encode(this.args) } })
+        worker.once('message', message => this.#message(message, resolve))
+        worker.on('error', error => this.#error(error, reject))
+        worker.on('exit', code => this.#exit(code, reject))
+        this.worker = worker
+        Dispatcher.register(this)
+        this.fire('start')
     }
 
     #message(message, resolve) {
         if (Dispatcher.config.logs.enabled)
             Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
         if (this.autoStop !== undefined ? this.autoStop : Dispatcher.config.threads.autoStop)
-            this.stop()
+            this.stop(message, null)
         resolve(message)
         this.callback?.(message, null)
-        this.fireEvent('onDone')
+        this.fire('done')
     }
 
     #error(error, reject) {
         if (Dispatcher.config.logs.enabled)
             Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
-        this.stop()
+        this.stop(null, error)
         this.callback?.(null, error)
         reject(error)
     }
 
     #exit(code, reject) {
-        this.stop()
-        if (code === 0) return
-        const error = new Error(`stopped with ${code} exit code`)
-        this.callback?.(null, error)
-        reject(error)
+        if (code === 0) {
+            this.stop(null, null)
+        } else {
+            const error = new Error(`stopped with ${code} exit code`)
+            this.stop(null, error)
+            this.callback?.(null, error)
+            reject(error)
+        }
     }
 }
 

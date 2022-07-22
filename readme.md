@@ -17,11 +17,11 @@ npm i threadman
 # Syntax
 
 ```js
-new Thread(fn, [...args]).run().then(callback)
+new Thread(fn, [...args], options).run().then(callback)
 
 // Or
 
-new Thread(fn, [...args], callback).run()
+new Thread(fn, [...args], options).run(callback)
 ```
 
 <br />
@@ -68,6 +68,28 @@ Dispatcher.config.logs.enabled = false
 // Sets the logger.
 // Defaults to 'console'
 Dispatcher.config.logs.logger = console
+```
+
+# **Events**
+
+Subscribing to events
+
+```js
+const thread = new Thread(fn, [...args], callback).run()
+
+thread.on('start', onStartFn)
+thread.on('stop', onStopFn)
+thread.on('done', onDoneFn)
+thread.on('error', onErrorFn)
+```
+
+Unsubscribe with
+
+```js
+thread.off('start', onStartFn)
+thread.off('stop', onStopFn)
+thread.off('done', onDoneFn)
+thread.off('error', onErrorFn)
 ```
 
 # **Documentation to be filled more soon**

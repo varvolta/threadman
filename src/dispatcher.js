@@ -15,8 +15,16 @@ class Dispatcher {
         }
     }
 
-    stopAll() {
-        threads.forEach(thread => thread.stop())
+    static register(thread) {
+        this.threads.push(thread)
+    }
+
+    static unregister(thread) {
+        this.threads.splice(this.threads.find(_thread => _thread === thread), 1)
+    }
+
+    static stopAll() {
+        this.threads.forEach(thread => thread.stop())
     }
 
 }
