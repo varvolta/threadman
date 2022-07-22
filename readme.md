@@ -2,7 +2,7 @@
 
 <br />
 
-Create and execute tasks in real cpu threads other than the main one.
+Create and execute tasks in real cpu threads other than the main one. (ES5 imports for now)
 
 <br />
 
@@ -48,7 +48,7 @@ new Thread(number => {
 }).run()
 
 ```
-After you get the result you can access main scope again and reassign variables. (ES5 imports for now)
+After you get the result you can access main scope again and reassign variables.
 
 <br />
 
