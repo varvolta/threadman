@@ -30,11 +30,9 @@ npm i threadman
 # Syntax
 
 ```js
-new Thread(fn, args, options).run().then(callback)
-
-// Or
-
 new Thread(fn, args, options).run(callback)
+// Or
+new Thread(fn, args, options).run().then(callback)
 ```
 
 <br />
@@ -51,6 +49,7 @@ const callback = (result) => number = result
 const args = [number]
 
 new Thread(fn, args).run(callback)
+
 // Or a callback function can be passed as third argument like below
 new Thread(fn, args).run().then(callback)
 
