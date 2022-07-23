@@ -1,6 +1,6 @@
 {
   "name": "threadman",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Worker threads made easy",
   "main": "index.js",
   "type": "module",

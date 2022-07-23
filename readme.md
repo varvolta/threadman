@@ -46,19 +46,13 @@ import { Thread }     from 'threadman'
 
 let number = 10
 
-new Thread(number => {
-    return number + 20
-}, [number]).run().then(result => {
-    number = result
-})
+const fn = (number) => number + 20
+const callback = (result) => number = result
+const args = [number]
 
+new Thread(fn, args).run(callback)
 // Or a callback function can be passed as third argument like below
-
-new Thread(number => {
-    return number + 20
-}, [number], result => {
-    number = result
-}).run()
+new Thread(fn, args).run().then(callback)
 
 ```
 After you get the result you can access main scope again and reassign variables.

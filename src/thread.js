@@ -17,11 +17,12 @@ class Thread {
         error: []
     }
 
-    constructor(fn, args, { autoStop, delay } = {}) {
+    constructor(fn, args, { autoStop, delay, resourceLimits } = {}) {
         this.fn = fn
         this.args = args
         this.autoStop = autoStop
         this.delay = delay
+        this.resourceLimits = resourceLimits
     }
 
     run(callback) {
@@ -69,11 +70,15 @@ class Thread {
     }
 
     #createWorker(resolve, reject) {
-        const worker = new Worker(this.#pathname, { workerData: { fn: Any.encode(this.fn), args: Any.encode(this.args) } })
+        const worker = new Worker(this.#pathname, {
+            workerData: { fn: Any.encode(this.fn), args: Any.encode(this.args) },
+            resourceLimits: this.resourceLimits
+        })
         worker.once('message', message => this.#message(message, resolve))
         worker.on('error', error => this.#error(error, reject))
         worker.on('exit', code => this.#exit(code, reject))
         this.worker = worker
+        this.id = worker.threadId
         Dispatcher.register(this)
         this.fire('start')
     }
