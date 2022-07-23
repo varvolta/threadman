@@ -20,7 +20,9 @@ class Dispatcher {
     }
 
     static unregister(thread) {
-        this.threads.splice(this.threads.find(_thread => _thread === thread), 1)
+        const index = this.threads.indexOf(thread)
+        if (index === -1) return
+        this.threads.splice(this.threads.indexOf(thread), 1)
     }
 
     static stopAll() {

@@ -1,8 +1,8 @@
-import Any               from './any.js'
-import Dispatcher        from './dispatcher.js'
-import { Worker }        from 'worker_threads'
+import Any from './any.js'
+import Dispatcher from './dispatcher.js'
+import { Worker } from 'worker_threads'
 import { fileURLToPath } from 'url'
-import path              from 'path'
+import path from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -55,7 +55,7 @@ class Thread {
     }
 
     off(event, fn) {
-        const index = this.events[event].indexOf(fn)
+        const index = this.#events[event].indexOf(fn)
         if (index !== -1)
             this.#events[event].splice(index, 1)
     }

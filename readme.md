@@ -30,11 +30,11 @@ npm i threadman
 # Syntax
 
 ```js
-new Thread(fn, [...args], options).run().then(callback)
+new Thread(fn, args, options).run().then(callback)
 
 // Or
 
-new Thread(fn, [...args], options).run(callback)
+new Thread(fn, args, options).run(callback)
 ```
 
 <br />
@@ -88,7 +88,7 @@ Dispatcher.config.logs.logger = console
 Subscribing to events
 
 ```js
-const thread = new Thread(fn, [...args])
+const thread = new Thread(fn, args)
 
 thread.on('start', onStartFn)
 thread.on('stop', onStopFn)
