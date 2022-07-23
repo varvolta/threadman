@@ -10,7 +10,7 @@
 <br />
 <br />
 
-# **Real threads made easy.**
+# **Worker threads made easy.**
 
 <br />
 
