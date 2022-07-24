@@ -70,18 +70,21 @@ class Thread {
         this.running = false
     }
 
-    on(event: string, fn: Function) {
-        this.#events[event as keyof ThreadEvents].push(fn)
+    on(event: keyof ThreadEvents, fn: Function) {
+        this.#events[event].push(fn)
     }
 
-    off(event: string, fn: Function) {
-        const index = this.#events[event as keyof ThreadEvents].indexOf(fn)
+    off(event: keyof ThreadEvents, fn: Function) {
+        const index = this.#events[event].indexOf(fn)
         if (index !== -1)
-            this.#events[event as keyof ThreadEvents].splice(index, 1)
+            this.#events[event].splice(index, 1)
     }
 
     offAll() {
-        Object.keys(this.#events).forEach(key => this.#events[key as keyof ThreadEvents] = [])
+        this.#events.start = []
+        this.#events.stop = []
+        this.#events.done = []
+        this.#events.error = []
     }
 
     fire(event: String, ...args: any[]) {

@@ -8,7 +8,12 @@ const callback = (result: any) => data += result
 const thread = new Thread(fn, args)
 new Thread(fn, args).run(callback)
 
-thread.on('stop', (result: any) => console.log('onStop', result))
+const onStop = (result: any) => console.log('onStop', result)
+
+thread.on('stop', onStop)
+thread.off('stop', onStop)
+thread.offAll()
+
 thread.run().then(callback)
 
 setTimeout(
