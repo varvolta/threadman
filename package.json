@@ -1,13 +1,19 @@
 {
   "name": "threadman",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "Worker threads made easy",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "node test.js",
-    "start": "node index.js"
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "node dist/test.js",
+    "start": "node dist/index.js"
   },
+  "files": [
+    "/dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/varvolta/threadman.git"
@@ -24,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/varvolta/threadman/issues"
   },
-  "homepage": "https://github.com/varvolta/threadman#readme"
+  "homepage": "https://github.com/varvolta/threadman#readme",
+  "devDependencies": {
+    "@types/node": "^18.0.6"
+  }
 }

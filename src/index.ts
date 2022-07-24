@@ -1,5 +1,5 @@
-import Dispatcher from './src/dispatcher.js'
-import Thread     from './src/thread.js'
+import Dispatcher from './dispatcher.js'
+import Thread     from './thread.js'
 
 const Threadman = {
     Thread,

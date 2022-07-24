@@ -1,6 +1,6 @@
 class Any {
-    static encode(data, prefix) {
-        function unicode_escape(c) {
+    static encode(data: any, prefix?: string): string {
+        function unicode_escape(c: string) {
             let s = c.charCodeAt(0).toString(16)
             while (s.length < 4) s = '0' + s
             return '\\u' + s
@@ -34,12 +34,12 @@ class Any {
                 return '"' + data + '"'
             default:
                 if (data.hasOwnProperty('toString'))
-                    return new Error(`stopped code injection`)
+                    throw (new Error(`stopped code injection`))
                 return String(data).replace(/\n/g, '\n' + prefix)
         }
     }
 
-    static decode(string) {
+    static decode(string: string) {
         return new Function('return ' + string)()
     }
 }

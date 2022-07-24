@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES2017",
+        "module": "ESNext",
+        "declaration": true,
+        "outDir": "./dist",
+        "strict": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

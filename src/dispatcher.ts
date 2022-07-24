@@ -1,8 +1,10 @@
-import os from 'os'
+import * as os from 'os'
+
+import Thread  from 'thread.js'
 
 class Dispatcher {
 
-    static threads = []
+    static threads: Thread[] = []
 
     static config = {
         threads: {
@@ -15,11 +17,11 @@ class Dispatcher {
         }
     }
 
-    static register(thread) {
+    static register(thread: Thread) {
         this.threads.push(thread)
     }
 
-    static unregister(thread) {
+    static unregister(thread: Thread) {
         const index = this.threads.indexOf(thread)
         if (index === -1) return
         this.threads.splice(this.threads.indexOf(thread), 1)
