@@ -8,6 +8,9 @@
  ```
 
 <br />
+
+## **Still in early stages of development. Email me any suggestions you have on varvolta@gmail.com**
+
 <br />
 
 # **Worker threads made easy.**
