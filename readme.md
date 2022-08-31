@@ -34,8 +34,9 @@ npm i threadman
 # Syntax
 
 ```js
+// With a callback
 new Thread(fn, args, options).run(callback)
-// Or
+// Or with a promise
 new Thread(fn, args, options).run().then(callback)
 ```
 
@@ -53,11 +54,8 @@ const callback = (result) => number = result
 const args = [number]
 
 new Thread(fn, args).run(callback)
-
-// Or a callback function can be passed as third argument like below
-new Thread(fn, args).run().then(callback)
-
 ```
+
 After you get the result you can access main scope again and reassign variables.
 
 <br />
@@ -82,7 +80,11 @@ Dispatcher.config.logs.logger = console
 
 # **Events**
 
-Subscribing to events
+<br/>
+
+### **Subscribing to events**
+
+<br/>
 
 ```js
 const thread = new Thread(fn, args)
@@ -92,12 +94,12 @@ thread.on('stop', onStopFn)
 thread.on('done', onDoneFn)
 thread.on('error', onErrorFn)
 
-thread.run().then(callback)
-// Or
 thread.run(callback)
 ```
 
-Unsubscribe with
+### **Unsubscribe with**
+
+<br/>
 
 ```js
 thread.off('start', onStartFn)
@@ -106,10 +108,12 @@ thread.off('done', onDoneFn)
 thread.off('error', onErrorFn)
 ```
 
-Unsubscribe from all events
+<br/>
+
+### **Unsubscribe from all events**
 
 ```js
 thread.offAll()
 ```
 
-# **Documentation to be filled more soon**
+## **Documentation to be filled more soon**

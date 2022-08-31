@@ -1,10 +1,12 @@
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable @typescript-eslint/ban-types */
 import { ResourceLimits, Worker } from 'worker_threads'
 
-import Any                        from './any.js'
-import Dispatcher                 from './dispatcher.js'
-import { fileURLToPath }          from 'url'
-import path                       from 'path'
-import { setTimeout }             from 'timers/promises'
+import Any from './any.js'
+import Dispatcher from './dispatcher.js'
+import { fileURLToPath } from 'url'
+import path from 'path'
+import { setTimeout } from 'timers/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -33,23 +35,29 @@ class Thread {
     }
 
     id?: number
+    priority = 1
     worker?: Worker
     fn: Function
-    args: any[]
+    args: unknown[]
     options: ThreadOptions
     running: Boolean = false
     callback?: Function
 
-    constructor(fn: Function, args: any[], options: ThreadOptions = {}) {
+    constructor(fn: Function, args: unknown[], options: ThreadOptions = {}, priority = 1) {
+        if (typeof Worker != 'function')
+            throw new Error('worker threads not available')
         this.fn = fn
         this.args = args
         this.options = options
+        this.priority = priority
     }
 
     run(callback?: Function) {
-        if (this.running) throw new Error(`thread already running`)
-        this.running = true
         this.callback = callback
+        if (this.running) {
+            this.stop()
+        }
+        this.running = true
         return new Promise(async (resolve, reject) => {
             if (this.options.delay)
                 await setTimeout(this.options.delay)

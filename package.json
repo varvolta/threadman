@@ -1,6 +1,6 @@
 {
   "name": "threadman",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "description": "Worker threads made easy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,9 @@
   },
   "homepage": "https://github.com/varvolta/threadman#readme",
   "devDependencies": {
-    "@types/node": "^18.0.6"
+    "@types/node": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.0",
+    "@typescript-eslint/parser": "^5.36.0",
+    "eslint": "^8.23.0"
   }
 }
