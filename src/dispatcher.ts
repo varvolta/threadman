@@ -19,7 +19,7 @@ class Dispatcher {
 
     static config = {
         threads: {
-            maxConcurrent: os.cpus().length,
+            maxParallel: os.cpus().length,
             autoStop: true
         },
         logs: {
@@ -43,7 +43,7 @@ class Dispatcher {
 
     static tryRun() {
         if (!this.queue.length) return
-        if (this.queue.filter(thread => thread.running === true).length >= this.config.threads.maxConcurrent) return
+        if (this.queue.filter(thread => thread.running === true).length >= this.config.threads.maxParallel) return
         this.queue = this.queue.sort((a, b) => a.priority - b.priority)
         const thread = this.queue.find(thread => thread.running === false)
         if (!thread) return
