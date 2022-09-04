@@ -98,6 +98,8 @@ thread.on('error', onErrorFn)
 thread.run(callback)
 ```
 
+<br/>
+
 ### **Unsubscribe with**
 
 <br/>
@@ -112,6 +114,8 @@ thread.off('error', onErrorFn)
 <br/>
 
 ### **Unsubscribe from all events**
+
+<br/>
 
 ```js
 thread.offAll()
