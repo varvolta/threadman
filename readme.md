@@ -34,7 +34,7 @@ npm i threadman
 # Syntax
 
 ```js
-new Thread(fn, args, options).run(callback)
+new Thread(fn, args, options?, priority?).run(callback)
 ```
 
 <br />
@@ -78,6 +78,8 @@ Dispatcher.config.logs.logger = console
 // Defaults to system
 Dispatcher.config.threads.maxParallel = os.cpus().length
 ```
+
+<br/>
 
 # **Events**
 
