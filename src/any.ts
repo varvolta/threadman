@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-control-regex */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-case-declarations */
 class Any {
     static encode(data: any, prefix?: string): string {
         function unicode_escape(c: string) {
@@ -10,8 +14,8 @@ class Any {
         switch (typeof data) {
             case 'object':
                 if (data == null) return 'null'
-                let i, pieces = [], before, after
-                let indent = prefix + '    '
+                let i, before, after
+                const indent = prefix + '    ', pieces = []
                 if (data instanceof Array) {
                     for (i = 0; i < data.length; i++)
                         pieces.push(Any.encode(data[i], indent))

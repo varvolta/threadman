@@ -1,27 +1,32 @@
 import { Dispatcher, Thread } from './index.js'
+// Dispatcher.config.logs.enabled = true
 
-const fn = (num1: number, num2: number) => num1 + num2
-const args = [123, 456]
+const logger = Dispatcher.config.logs.logger
+
 let data = 0
-const callback = (result: number) => data += result
-// const callback2 = (result: number) => data *= result
+const args = [123, 456]
+const factor = 5
 
-const thread = new Thread(fn, args)
-// new Thread(fn, args).run(callback2)
+for (let i = 0; i < factor; i++) {
+    const fn = (num1: number, num2: number) => num1 + num2
+    const callback = (result: number) => data += result
 
-const onStop = (result: number) => console.log('onStop', result)
+    const thread = new Thread(fn, args)
 
-thread.on('stop', onStop)
-thread.off('stop', onStop)
-thread.offAll()
+    // const onStart = () => logger.log('onStart')
+    // const onStop = (result: number) => logger.log('onStop', result)
 
-thread.run(callback)
-// thread.run(callback2)
+    // thread.on('start', onStart)
+    // thread.on('stop', onStop)
+
+    thread.run(callback)
+}
 
 setTimeout(
-    () => Dispatcher.config.logs.logger.log(
+    () => logger.log(
         '[ THREADMAN TEST RESULT ]',
-        data === args[0] + args[1] + args[0] + args[1] ? 'Passed' : 'Error', '- Result:',
-        data)
+        data === args[0] * factor + args[1] * factor ? 'Passed' : 'Error', '- Result:',
+        data
+    )
     , 200
 )

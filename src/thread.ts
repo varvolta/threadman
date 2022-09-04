@@ -2,14 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ResourceLimits, Worker } from 'worker_threads'
 
-import Any from './any.js'
-import Dispatcher from './dispatcher.js'
-import { fileURLToPath } from 'url'
-import path from 'path'
-import { setTimeout } from 'timers/promises'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import Dispatcher                 from './dispatcher.js'
 
 interface ThreadOptions {
     autoStop?: boolean,
@@ -25,9 +18,8 @@ interface ThreadEvents {
 }
 
 class Thread {
-    #pathname = __dirname + '/worker.js'
 
-    #events: ThreadEvents = {
+    events: ThreadEvents = {
         start: [],
         stop: [],
         done: [],
@@ -44,25 +36,17 @@ class Thread {
     callback?: Function
 
     constructor(fn: Function, args: unknown[], options: ThreadOptions = {}, priority = 1) {
-        if (typeof Worker != 'function')
-            throw new Error('worker threads not available')
+        if (typeof Worker != 'function') throw new Error('worker threads not available')
         this.fn = fn
         this.args = args
         this.options = options
         this.priority = priority
+        Dispatcher.register(this)
     }
 
     run(callback?: Function) {
         this.callback = callback
-        if (this.running) {
-            this.stop()
-        }
-        this.running = true
-        return new Promise(async (resolve, reject) => {
-            if (this.options.delay)
-                await setTimeout(this.options.delay)
-            this.#createWorker(resolve, reject)
-        })
+        Dispatcher.tryRun()
     }
 
     stop(result?: string, error?: Error) {
@@ -74,73 +58,32 @@ class Thread {
         } else {
             this.fire('stop', result)
         }
-        Dispatcher.unregister(this)
         this.running = false
+        Dispatcher.unregister(this)
+        Dispatcher.tryRun()
     }
 
     on(event: keyof ThreadEvents, fn: Function) {
-        this.#events[event].push(fn)
+        this.events[event].push(fn)
     }
 
     off(event: keyof ThreadEvents, fn: Function) {
-        const index = this.#events[event].indexOf(fn)
+        const index = this.events[event].indexOf(fn)
         if (index !== -1)
-            this.#events[event].splice(index, 1)
+            this.events[event].splice(index, 1)
     }
 
     offAll() {
-        this.#events.start = []
-        this.#events.stop = []
-        this.#events.done = []
-        this.#events.error = []
+        this.events.start = []
+        this.events.stop = []
+        this.events.done = []
+        this.events.error = []
     }
 
-    fire(event: String, ...args: any[]) {
-        this.#events[event as keyof ThreadEvents].forEach(fn => fn(...args))
+    fire(event?: string, ...args: unknown[]) {
+        this.events[event as keyof ThreadEvents].forEach(fn => fn(...args))
     }
 
-    #createWorker(resolve: Function, reject: Function) {
-        const worker = new Worker(this.#pathname, {
-            workerData: { fn: Any.encode(this.fn), args: Any.encode(this.args) },
-            resourceLimits: this.options.resourceLimits
-        })
-        worker.once('message', message => this.#message(message, resolve))
-        worker.on('error', error => this.#error(error, reject))
-        worker.on('exit', code => this.#exit(code, reject))
-        this.worker = worker
-        this.id = worker.threadId
-        Dispatcher.register(this)
-        this.fire('start')
-    }
-
-    #message(message: string, resolve: Function) {
-        if (Dispatcher.config.logs.enabled)
-            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
-        if (this.options.autoStop !== undefined ? this.options.autoStop : Dispatcher.config.threads.autoStop)
-            this.stop(message, undefined)
-        resolve(message)
-        this.callback?.(message, null)
-        this.fire('done')
-    }
-
-    #error(error: Error, reject: Function) {
-        if (Dispatcher.config.logs.enabled)
-            Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
-        this.stop(undefined, error)
-        this.callback?.(null, error)
-        reject(error)
-    }
-
-    #exit(code: number, reject: Function) {
-        if (code === 0) {
-            this.stop(undefined, undefined)
-        } else {
-            const error = new Error(`stopped with ${code} exit code`)
-            this.stop(undefined, error)
-            this.callback?.(null, error)
-            reject(error)
-        }
-    }
 }
 
 export default Thread
