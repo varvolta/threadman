@@ -9,7 +9,7 @@
 
 <br />
 
-## **Still in early stages of development. Email me any suggestions you have on varvolta@gmail.com**
+### **Still in early stages of development. Email me any suggestions you have on varvolta@gmail.com**
 
 <br />
 
@@ -117,4 +117,4 @@ thread.off('error', onErrorFn)
 thread.offAll()
 ```
 
-## **Documentation to be filled more soon**
+### **Documentation to be filled more soon**
