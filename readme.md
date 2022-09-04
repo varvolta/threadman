@@ -117,4 +117,6 @@ thread.off('error', onErrorFn)
 thread.offAll()
 ```
 
+<br/>
+
 ### **Documentation to be filled more soon**
