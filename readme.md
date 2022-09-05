@@ -17,7 +17,7 @@
 
 <br />
 
-Create and execute tasks in real cpu threads other than the main one. (ES6 imports for now)
+Create and execute tasks in real cpu threads in NodeJS. (ES6 imports for now)
 
 Threadman doesn't use any dependencies. It's based on workers.
 
