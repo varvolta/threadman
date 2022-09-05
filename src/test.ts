@@ -1,6 +1,6 @@
 import { Dispatcher, Thread } from './index.js'
-Dispatcher.config.logs.enabled = true
-Dispatcher.config.threads.statistics = true
+// Dispatcher.config.logs.enabled = true
+// Dispatcher.config.threads.statistics = true
 
 const logger = Dispatcher.config.logs.logger
 

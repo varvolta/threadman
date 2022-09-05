@@ -1,13 +1,13 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
-import * as os from 'os'
+import * as os           from 'os'
 
-import Any from './any.js'
-import Thread from './thread.js'
-import { Worker } from 'worker_threads'
+import Any               from './any.js'
+import Thread            from './thread.js'
+import { Worker }        from 'worker_threads'
 import { fileURLToPath } from 'url'
-import path from 'path'
-import { setTimeout } from 'timers/promises'
+import path              from 'path'
+import { setTimeout }    from 'timers/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -21,7 +21,7 @@ class Dispatcher {
         threads: {
             maxParallel: os.cpus().length,
             autoStop: true,
-            statistics: true
+            statistics: false
         },
         logs: {
             enabled: false,
@@ -80,7 +80,7 @@ class Dispatcher {
         thread.callback?.(message, null)
         thread.endTime = performance.now()
         if (Dispatcher.config.logs.enabled)
-            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD STATISTICS ]', 'id: ' + thread.id, ' --- ', Math.ceil(thread.endTime - thread.startTime) + 'ms')
+            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD STATS ]', 'id: ' + thread.id, ' --- ', Math.ceil(thread.endTime - thread.startTime) + 'ms')
         thread.fire('done')
     }
 
