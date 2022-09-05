@@ -47,8 +47,8 @@ import { Thread }     from 'threadman'
 let number = 10
 
 const fn = (number) => number + 20
-const callback = (result) => number = result
 const args = [number]
+const callback = (result) => number = result
 
 new Thread(fn, args).run(callback)
 ```

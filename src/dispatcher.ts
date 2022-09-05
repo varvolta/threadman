@@ -1,13 +1,13 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
-import * as os           from 'os'
+import * as os from 'os'
 
-import Any               from './any.js'
-import Thread            from './thread.js'
-import { Worker }        from 'worker_threads'
+import Any from './any.js'
+import Thread from './thread.js'
+import { Worker } from 'worker_threads'
 import { fileURLToPath } from 'url'
-import path              from 'path'
-import { setTimeout }    from 'timers/promises'
+import path from 'path'
+import { setTimeout } from 'timers/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,7 +20,8 @@ class Dispatcher {
     static config = {
         threads: {
             maxParallel: os.cpus().length,
-            autoStop: true
+            autoStop: true,
+            statistics: true
         },
         logs: {
             enabled: false,
@@ -49,6 +50,7 @@ class Dispatcher {
         if (!thread) return
         if (thread.running) thread.stop()
         thread.running = true
+        thread.startTime = performance.now()
         return new Promise(async (resolve, reject) => {
             if (thread.options.delay)
                 await setTimeout(thread.options.delay)
@@ -71,17 +73,20 @@ class Dispatcher {
 
     static #message(thread: Thread, message: string, resolve: Function) {
         if (Dispatcher.config.logs.enabled)
-            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', message)
+            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', 'id: ' + thread.id, ' --- ', message)
         if (thread.options.autoStop !== undefined ? thread.options.autoStop : Dispatcher.config.threads.autoStop)
             thread.stop(message, undefined)
         resolve(message)
         thread.callback?.(message, null)
+        thread.endTime = performance.now()
+        if (Dispatcher.config.logs.enabled)
+            Dispatcher.config.logs.logger.info('[ THREADMAN THREAD STATISTICS ]', 'id: ' + thread.id, ' --- ', Math.ceil(thread.endTime - thread.startTime) + 'ms')
         thread.fire('done')
     }
 
     static #error(thread: Thread, error: Error, reject: Function) {
         if (Dispatcher.config.logs.enabled)
-            Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', error)
+            Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', 'id: ' + thread.id, ' --- ', error)
         thread.stop(undefined, error)
         thread.callback?.(null, error)
         reject(error)

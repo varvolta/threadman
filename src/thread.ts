@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ResourceLimits, Worker } from 'worker_threads'
 
-import Dispatcher                 from './dispatcher.js'
+import Dispatcher from './dispatcher.js'
 
 interface ThreadOptions {
     autoStop?: boolean,
@@ -34,6 +34,8 @@ class Thread {
     options: ThreadOptions
     running: Boolean = false
     callback?: Function
+    startTime = 0
+    endTime = 0
 
     constructor(fn: Function, args: unknown[], options: ThreadOptions = {}, priority = 1) {
         if (typeof Worker != 'function') throw new Error('worker threads not available')
