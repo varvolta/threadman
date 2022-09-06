@@ -50,33 +50,32 @@ class Dispatcher {
         if (!thread) return
         if (thread.running) thread.stop()
         thread.running = true
-        thread.startTime = performance.now()
-        return new Promise(async (resolve, reject) => {
+        thread.startTime = performance.now();
+        (async () => {
             if (thread.options.delay)
                 await setTimeout(thread.options.delay)
-            this.#createWorker(thread, resolve, reject)
-        })
+            this.#createWorker(thread)
+        })()
     }
 
-    static #createWorker(thread: Thread, resolve: Function, reject: Function) {
+    static #createWorker(thread: Thread) {
         const worker = new Worker(this.pathname, {
             workerData: { fn: Any.encode(thread.fn), args: Any.encode(thread.args) },
             resourceLimits: thread.options.resourceLimits
         })
-        worker.once('message', message => this.#message(thread, message, resolve))
-        worker.on('error', error => this.#error(thread, error, reject))
-        worker.on('exit', code => this.#exit(thread, code, reject))
+        worker.once('message', message => this.#message(thread, message))
+        worker.on('error', error => this.#error(thread, error))
+        worker.on('exit', code => this.#exit(thread, code))
         thread.worker = worker
         thread.id = worker.threadId
         thread.fire('start')
     }
 
-    static #message(thread: Thread, message: string, resolve: Function) {
+    static #message(thread: Thread, message: string) {
         if (Dispatcher.config.logs.enabled)
             Dispatcher.config.logs.logger.info('[ THREADMAN THREAD DONE ]', 'id: ' + thread.id, ' --- ', message)
         if (thread.options.autoStop !== undefined ? thread.options.autoStop : Dispatcher.config.threads.autoStop)
             thread.stop(message, undefined)
-        resolve(message)
         thread.callback?.(message, null)
         thread.endTime = performance.now()
         if (Dispatcher.config.logs.enabled)
@@ -84,22 +83,18 @@ class Dispatcher {
         thread.fire('done')
     }
 
-    static #error(thread: Thread, error: Error, reject: Function) {
+    static #error(thread: Thread, error: Error) {
         if (Dispatcher.config.logs.enabled)
             Dispatcher.config.logs.logger.error('[ THREADMAN THREAD ERROR ]', 'id: ' + thread.id, ' --- ', error)
         thread.stop(undefined, error)
         thread.callback?.(null, error)
-        reject(error)
     }
 
-    static #exit(thread: Thread, code: number, reject: Function) {
-        if (code === 0) {
-            thread.stop(undefined, undefined)
-        } else {
+    static #exit(thread: Thread, code: number) {
+        if (code !== 0) {
             const error = new Error(`stopped with ${code} exit code`)
             thread.stop(undefined, error)
             thread.callback?.(null, error)
-            reject(error)
         }
     }
 
