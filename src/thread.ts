@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { ResourceLimits, Worker } from 'worker_threads'
 
-import Dispatcher from './dispatcher.js'
+import Dispatcher                 from './dispatcher.js'
 
 interface ThreadOptions {
     autoStop?: boolean,
