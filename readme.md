@@ -55,12 +55,33 @@ new Thread(fn, args).run(callback)
 
 After you get the result you can access main scope again and reassign variables.
 
+
+<br />
+
+# Using modules
+
+```js
+import { Thread }     from 'threadman'
+import md5            from 'md5'
+
+let string
+
+const fn = (md5, string) => md5(string)
+const args = [md5, string]
+const callback = (result) => string = result
+
+new Thread(fn, args).run(callback)
+```
 <br />
 
 # Config
 
 ```js
 import { Dispatcher } from 'threadman'
+
+// Sets maximum parallel threads count.
+// Defaults to system
+Dispatcher.config.threads.maxParallel = os.cpus().length
 
 // Automatically stops the thread after returning the result.
 // Defaults to 'true'.
@@ -73,10 +94,6 @@ Dispatcher.config.logs.enabled = false
 // Sets the logger.
 // Defaults to 'console'
 Dispatcher.config.logs.logger = console
-
-// Sets maximum parallel threads count.
-// Defaults to system
-Dispatcher.config.threads.maxParallel = os.cpus().length
 ```
 
 <br/>
