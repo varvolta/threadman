@@ -1,8 +1,9 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
-import { ResourceLimits, Worker } from 'worker_threads'
 
-import Dispatcher                 from './dispatcher.js'
+import { ResourceLimits, Worker } from 'node:worker_threads'
+
+import { Dispatcher }             from './dispatcher.js'
 
 interface ThreadOptions {
     autoStop?: boolean,
@@ -88,4 +89,4 @@ class Thread {
 
 }
 
-export default Thread
+export { Thread, ThreadOptions, ThreadEvents }

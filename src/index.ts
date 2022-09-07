@@ -1,14 +1,22 @@
-import Dispatcher from './dispatcher.js'
-import Thread     from './thread.js'
+import { Dispatcher, DispatcherConfig, DispatcherConfigLogs, DispatcherConfigThreads } from './dispatcher.js'
+import { Thread, ThreadEvents, ThreadOptions }                                         from './thread.js'
 
 const Threadman = {
     Thread,
-    Dispatcher
+    Dispatcher,
 }
 
 export {
-    Thread,
-    Dispatcher
+    Dispatcher,
+    Thread
+}
+
+export type {
+    DispatcherConfig,
+    DispatcherConfigThreads,
+    DispatcherConfigLogs,
+    ThreadEvents,
+    ThreadOptions
 }
 
 export default Threadman

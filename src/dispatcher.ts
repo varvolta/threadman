@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
+
 import * as os           from 'os'
 
 import Any               from './any.js'
-import Thread            from './thread.js'
-import { Worker }        from 'worker_threads'
+import { Thread }        from './thread.js'
+import { Worker }        from 'node:worker_threads'
 import { fileURLToPath } from 'url'
 import path              from 'path'
 import { setTimeout }    from 'timers/promises'
@@ -12,12 +14,28 @@ import { setTimeout }    from 'timers/promises'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+interface DispatcherConfigThreads {
+    maxParallel: number,
+    autoStop: boolean,
+    statistics: boolean
+}
+
+interface DispatcherConfigLogs {
+    enabled: boolean,
+    logger: any
+}
+
+interface DispatcherConfig {
+    threads: DispatcherConfigThreads,
+    logs: DispatcherConfigLogs,
+}
+
 class Dispatcher {
     static pathname = __dirname + '/worker.js'
 
     static queue: Thread[] = []
 
-    static config = {
+    static config: DispatcherConfig = {
         threads: {
             maxParallel: os.cpus().length,
             autoStop: true,
@@ -105,4 +123,4 @@ class Dispatcher {
 
 }
 
-export default Dispatcher
+export { Dispatcher, DispatcherConfig, DispatcherConfigThreads, DispatcherConfigLogs }
