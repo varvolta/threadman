@@ -19,11 +19,12 @@ for (let i = 0; i < parallel; i++) {
 const results = args.reduce((c, n) => c + n) * parallel
 pool.run(callback)
 
-pool.on('done', () =>
+pool.on('done', (result: any) => {
+    logger.log(result)
 	logger.log(
 		'[ THREADMAN TEST RESULT ]',
 		data === results ? 'Test Passed' : 'Test Failed',
 		'- Result:',
 		data
 	)
-)
+})

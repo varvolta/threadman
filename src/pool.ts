@@ -14,9 +14,9 @@ class Pool extends Background {
 		this.threads.push(thread)
 	}
 
-	done() {
+	done(args: any) {
 		this.results -= 1
-		if (this.results === 0) this.fire('done', [])
+		if (this.results === 0) this.fire('done', args)
 	}
 
 	run(callback: Function) {
@@ -25,7 +25,7 @@ class Pool extends Background {
 			const thread = this.threads[i]
 			thread.run((args: unknown[]) => {
 				callback(args)
-				this.done()
+				this.done(args)
 			})
 		}
 	}

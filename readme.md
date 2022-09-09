@@ -42,7 +42,7 @@ new Thread(fn, args, options?, priority?).run(callback)
 # Basic usage
 
 ```js
-import { Thread }     from 'threadman'
+import { Thread } from 'threadman'
 
 let number = 10
 
@@ -61,8 +61,8 @@ After you get the result you can access the main scope again and reassign variab
 # Using modules
 
 ```js
-import { Thread }     from 'threadman'
-import md5            from 'md5'
+import { Thread } from 'threadman'
+import md5 from 'md5'
 
 let string
 
@@ -71,6 +71,31 @@ const args = [md5, string]
 const callback = (result) => string = result
 
 new Thread(fn, args).run(callback)
+```
+<br />
+
+# Using pools
+
+```js
+import { Thread, Pool } from 'threadman'
+import md5 from 'md5'
+
+let string
+
+const fn = (md5, string) => md5(string)
+const args = [md5, string]
+const callback = (result) => string = result
+
+const pool = new Pool()
+
+const thread1 = new Thread(fn, args)
+const thread2 = new Thread(fn, args)
+
+pool.add(thread1)
+pool.add(thread2)
+
+pool.on('done', callback)
+pool.run(callback)
 ```
 <br />
 
