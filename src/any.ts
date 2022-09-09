@@ -2,6 +2,7 @@
 /* eslint-disable no-control-regex */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-case-declarations */
+
 class Any {
     static encode(data: any, prefix?: string): string {
         function unicode_escape(c: string) {

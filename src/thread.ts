@@ -1,31 +1,13 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { ResourceLimits, Worker } from 'node:worker_threads'
+import { Worker } from 'node:worker_threads'
+import { Background } from './background.js'
 
 import { Dispatcher }             from './dispatcher.js'
+import { ThreadEvents, ThreadOptions } from './interfaces.js'
 
-interface ThreadOptions {
-    autoStop?: boolean,
-    delay?: number,
-    resourceLimits?: ResourceLimits
-}
-
-interface ThreadEvents {
-    start: Function[]
-    stop: Function[],
-    done: Function[],
-    error: Function[]
-}
-
-class Thread {
-
-    events: ThreadEvents = {
-        start: [],
-        stop: [],
-        done: [],
-        error: []
-    }
+class Thread extends Background {
 
     id?: number
     priority = 1
@@ -39,6 +21,7 @@ class Thread {
     endTime = 0
 
     constructor(fn: Function, args: unknown[], options: ThreadOptions = {}, priority = 1) {
+        super()
         if (typeof Worker != 'function') throw new Error('worker threads not available')
         this.fn = fn
         this.args = args
@@ -47,7 +30,7 @@ class Thread {
         Dispatcher.register(this)
     }
 
-    run(callback?: Function) {
+    run(callback: Function) {
         this.callback = callback
         Dispatcher.tryRun()
     }
@@ -64,27 +47,6 @@ class Thread {
         this.running = false
         Dispatcher.unregister(this)
         Dispatcher.tryRun()
-    }
-
-    on(event: keyof ThreadEvents, fn: Function) {
-        this.events[event].push(fn)
-    }
-
-    off(event: keyof ThreadEvents, fn: Function) {
-        const index = this.events[event].indexOf(fn)
-        if (index !== -1)
-            this.events[event].splice(index, 1)
-    }
-
-    offAll() {
-        this.events.start = []
-        this.events.stop = []
-        this.events.done = []
-        this.events.error = []
-    }
-
-    fire(event?: string, ...args: unknown[]) {
-        this.events[event as keyof ThreadEvents].forEach(fn => fn(...args))
     }
 
 }

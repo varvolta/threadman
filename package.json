@@ -1,6 +1,6 @@
 {
   "name": "threadman",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "Worker threads made easy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
-    "test": "node dist/test.js",
+    "test": "tsc && node dist/test.js",
     "start": "node dist/index.js"
   },
   "files": [

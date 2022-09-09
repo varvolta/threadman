@@ -1,6 +1,6 @@
 import { parentPort, workerData } from 'node:worker_threads'
 
-import Any                        from './any.js'
+import Any from './any.js'
 
 let message
 
