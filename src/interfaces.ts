@@ -1,4 +1,5 @@
 import { ResourceLimits } from 'node:worker_threads'
+import { Thread } from './thread'
 
 interface ThreadOptions {
     autoStop?: boolean,
