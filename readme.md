@@ -80,11 +80,11 @@ new Thread(fn, args).run(callback)
 import { Thread, Pool } from 'threadman'
 import md5 from 'md5'
 
-let string
+let data
 
 const fn = (md5, string) => md5(string)
 const args = [md5, string]
-const callback = (result) => string = result
+const callback = (results) => data = results
 
 const pool = new Pool()
 
@@ -97,6 +97,9 @@ pool.add(thread2)
 pool.on('done', callback)
 pool.run(callback)
 ```
+Callback returns all the results from thread runs in an array
+
+
 <br />
 
 # Config

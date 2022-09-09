@@ -3,7 +3,8 @@ import { Background } from './background.js'
 
 class Pool extends Background {
 	threads: Thread[] = []
-	results = 0
+	count = 0
+	args: any[] = []
 
 	constructor(threads: Thread[] = []) {
 		super()
@@ -14,18 +15,21 @@ class Pool extends Background {
 		this.threads.push(thread)
 	}
 
-	done(args: any) {
-		this.results -= 1
-		if (this.results === 0) this.fire('done', args)
+	done() {
+		this.count -= 1
+		if (this.count === 0) {
+			this.args.sort
+			this.fire('done', this.args.sort((a, b) => a - b).map(item => item.result))
+		}
 	}
 
 	run(callback: Function) {
-		this.results = this.threads.length
+		this.count = this.threads.length
 		for (let i = 0; i < this.threads.length; i++) {
 			const thread = this.threads[i]
-			thread.run((args: unknown[]) => {
-				callback(args)
-				this.done(args)
+			thread.run((result: unknown[]) => {
+				this.args.push({id: thread.id, result})
+				this.done()
 			})
 		}
 	}
