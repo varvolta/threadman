@@ -1,12 +1,16 @@
 import { Thread } from './thread.js'
 
 class Pool {
+	static count = 0
 	threads: Thread[] = []
 	counter = 0
 	args: any[] = []
+	id: number
 
 	constructor(threads: Thread[] = []) {
 		this.threads = threads
+		this.id = Pool.count
+		Pool.count++
 	}
 
 	add(thread: Thread) {

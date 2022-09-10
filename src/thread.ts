@@ -9,7 +9,7 @@ import { ThreadEvents, ThreadOptions } from './interfaces.js'
 
 class Thread extends Background {
 	id?: number
-	priority = 1
+	priority: number
 	worker?: Worker
 	fn: Function
 	args: unknown[]
