@@ -1,13 +1,11 @@
 import { Thread } from './thread.js'
-import { Background } from './background.js'
 
-class Pool extends Background {
+class Pool {
 	threads: Thread[] = []
-	count = 0
+	counter = 0
 	args: any[] = []
 
 	constructor(threads: Thread[] = []) {
-		super()
 		this.threads = threads
 	}
 
@@ -15,21 +13,25 @@ class Pool extends Background {
 		this.threads.push(thread)
 	}
 
-	done() {
-		this.count -= 1
-		if (this.count === 0) {
+	done(callback: Function) {
+		this.counter -= 1
+		if (this.counter === 0) {
 			this.args.sort
-			this.fire('done', this.args.sort((a, b) => a - b).map(item => item.result))
+			callback(this.args.sort((a, b) => a - b).map((item) => item.result))
 		}
 	}
 
 	run(callback: Function) {
-		this.count = this.threads.length
+		this.start(callback)
+	}
+
+	start(callback: Function) {
+		this.counter = this.threads.length
 		for (let i = 0; i < this.threads.length; i++) {
 			const thread = this.threads[i]
 			thread.run((result: unknown[]) => {
-				this.args.push({id: thread.id, result})
-				this.done()
+				this.args.push({ id: thread.id, result })
+				this.done(callback)
 			})
 		}
 	}

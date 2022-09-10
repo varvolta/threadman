@@ -94,7 +94,6 @@ const thread2 = new Thread(fn, args)
 pool.add(thread1)
 pool.add(thread2)
 
-pool.on('done', callback)
 pool.run(callback)
 ```
 Callback returns all the results from thread runs in an array
