@@ -53,7 +53,7 @@ const callback = (result) => number = result
 new Thread(fn, args).run(callback)
 ```
 
-After you get the result you can access the main scope again and reassign variables.
+After you get the result you can access the main scope again and reassign variables. 'fn' can be async.
 
 
 <br />

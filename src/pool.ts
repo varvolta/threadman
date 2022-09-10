@@ -22,10 +22,6 @@ class Pool {
 	}
 
 	run(callback: Function) {
-		this.start(callback)
-	}
-
-	start(callback: Function) {
 		this.counter = this.threads.length
 		for (let i = 0; i < this.threads.length; i++) {
 			const thread = this.threads[i]
@@ -35,6 +31,7 @@ class Pool {
 			})
 		}
 	}
+
 }
 
 export { Pool }
