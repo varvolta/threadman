@@ -98,7 +98,7 @@ class Dispatcher {
 				: Dispatcher.config.threads.autoStop
 		)
 			thread.stop(message, undefined)
-		thread.callback?.(message, null)
+		thread.runCallback?.(message)
 		thread.endTime = performance.now()
 		if (this.config.logs.enabled && this.config.threads.statistics)
 			this.config.logs.logger.info(
@@ -119,14 +119,14 @@ class Dispatcher {
 				error
 			)
 		thread.stop(undefined, error)
-		thread.callback?.(null, error)
+		thread.catchCallback?.(error)
 	}
 
 	static #exit(thread: Thread, code: number) {
 		if (code !== 0) {
 			const error = new Error(`stopped with ${code} exit code`)
 			thread.stop(undefined, error)
-			thread.callback?.(null, error)
+			thread.catchCallback?.(error)
 		}
 	}
 

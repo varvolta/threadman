@@ -15,7 +15,8 @@ class Thread extends Background {
 	args: unknown[]
 	options: ThreadOptions
 	running: Boolean = false
-	callback?: Function
+	runCallback?: Function
+	catchCallback?: Function
 	startTime = 0
 	endTime = 0
 
@@ -36,8 +37,14 @@ class Thread extends Background {
 	}
 
 	run(callback: Function) {
-		this.callback = callback
+		this.runCallback = callback
 		Dispatcher.tryRun()
+		return this
+	}
+
+	catch(callback: Function) {
+		this.catchCallback = callback
+		return this
 	}
 
 	stop(result?: string, error?: Error) {

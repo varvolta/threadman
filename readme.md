@@ -101,6 +101,15 @@ Callback returns all the results from thread runs in an array
 
 <br />
 
+# Catching errors
+
+```js
+new Thread(fn, args).run(runCallback).catch(catchCallback)
+```
+
+
+<br />
+
 # Config
 
 ```js
