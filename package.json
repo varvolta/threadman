@@ -1,6 +1,6 @@
 {
   "name": "threadman",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "Worker threads made easy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

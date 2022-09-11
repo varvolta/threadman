@@ -20,7 +20,9 @@ class Pool {
 	done(callback: Function, resolve: Function, reject: Function) {
 		this.counter -= 1
 		if (this.counter === 0) {
-			const args = this.args.sort((a, b) => a - b).map((item) => item.result)
+			const args = this.args
+				.sort((a, b) => a - b)
+				.map(({ result }) => result)
 			callback(args)
 			resolve(args)
 		}
@@ -34,7 +36,7 @@ class Pool {
 				thread.run((result: unknown[]) => {
 					this.args.push({ id: thread.id, result })
 					this.done(callback, resolve, reject)
-				})
+				}).catch(reject)
 			}
 		})
 	}
