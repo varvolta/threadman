@@ -21,7 +21,7 @@ const callback = (results: any) => {
 const pool = new Pool()
 
 for (let i = 0; i < parallel; i++) {
-	pool.add(new Thread(fn, args))
+	pool.queue(new Thread(fn, args))
 }
 
 pool.run(callback)

@@ -13,7 +13,7 @@ class Pool {
 		Pool.count++
 	}
 
-	add(thread: Thread) {
+	queue(thread: Thread) {
 		this.threads.push(thread)
 	}
 

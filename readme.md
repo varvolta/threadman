@@ -91,8 +91,8 @@ const pool = new Pool()
 const thread1 = new Thread(fn, args)
 const thread2 = new Thread(fn, args)
 
-pool.add(thread1)
-pool.add(thread2)
+pool.queue(thread1)
+pool.queue(thread2)
 
 pool.run(callback)
 ```
