@@ -17,7 +17,7 @@ class Pool {
 		this.threads.push(thread)
 	}
 
-	done(callback: Function, resolve: Function, reject: Function) {
+	done(callback: Function, resolve: Function) {
 		this.counter -= 1
 		if (this.counter === 0) {
 			const args = this.args
@@ -35,7 +35,7 @@ class Pool {
 				const thread = this.threads[i]
 				thread.run((result: unknown[]) => {
 					this.args.push({ id: thread.id, result })
-					this.done(callback, resolve, reject)
+					this.done(callback, resolve)
 				}).catch(reject)
 			}
 		})
