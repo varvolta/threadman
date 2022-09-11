@@ -24,4 +24,4 @@ for (let i = 0; i < parallel; i++) {
 	pool.queue(new Thread(fn, args))
 }
 
-pool.run(callback)
+await pool.run(callback)

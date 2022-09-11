@@ -17,23 +17,26 @@ class Pool {
 		this.threads.push(thread)
 	}
 
-	done(callback: Function) {
+	done(callback: Function, resolve: Function, reject: Function) {
 		this.counter -= 1
 		if (this.counter === 0) {
-			this.args.sort
-			callback(this.args.sort((a, b) => a - b).map((item) => item.result))
+			const args = this.args.sort((a, b) => a - b).map((item) => item.result)
+			callback(args)
+			resolve(args)
 		}
 	}
 
 	run(callback: Function) {
-		this.counter = this.threads.length
-		for (let i = 0; i < this.threads.length; i++) {
-			const thread = this.threads[i]
-			thread.run((result: unknown[]) => {
-				this.args.push({ id: thread.id, result })
-				this.done(callback)
-			})
-		}
+		return new Promise((resolve: Function, reject: Function) => {
+			this.counter = this.threads.length
+			for (let i = 0; i < this.threads.length; i++) {
+				const thread = this.threads[i]
+				thread.run((result: unknown[]) => {
+					this.args.push({ id: thread.id, result })
+					this.done(callback, resolve, reject)
+				})
+			}
+		})
 	}
 
 }
