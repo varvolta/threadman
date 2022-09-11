@@ -138,7 +138,5 @@ class Dispatcher {
 
 export {
 	Dispatcher,
-	DispatcherConfig,
-	DispatcherConfigThreads,
-	DispatcherConfigLogs
+	DispatcherConfig
 }

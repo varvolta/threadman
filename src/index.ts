@@ -1,11 +1,7 @@
-import {
-	Dispatcher,
-	DispatcherConfig,
-	DispatcherConfigLogs,
-	DispatcherConfigThreads
-} from './dispatcher.js'
+import { Dispatcher, DispatcherConfig } from './dispatcher.js'
 import { Thread, ThreadEvents, ThreadOptions } from './thread.js'
 import { Pool } from './pool.js'
+import { DispatcherConfigLogs, DispatcherConfigThreads } from './interfaces.js'
 
 const Threadman = {
 	Thread,
@@ -16,11 +12,11 @@ const Threadman = {
 export { Dispatcher, Thread, Pool }
 
 export type {
-	DispatcherConfig,
+	ThreadOptions,
+	ThreadEvents,
 	DispatcherConfigThreads,
 	DispatcherConfigLogs,
-	ThreadEvents,
-	ThreadOptions
+	DispatcherConfig
 }
 
 export default Threadman

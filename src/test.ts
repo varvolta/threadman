@@ -12,7 +12,9 @@ const data = args.reduce((c, n) => c + n) * parallel
 const callback = (results: any) => {
 	logger.log(
 		'[ THREADMAN TEST RESULT ]',
-		data === results.reduce((c: number, n: number) => c + n) ? 'Test Passed' : 'Test Failed',
+		data === results.reduce((c: number, n: number) => c + n)
+			? 'Test Passed'
+			: 'Test Failed',
 		'- Result:',
 		data
 	)
