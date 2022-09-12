@@ -116,7 +116,7 @@ new Thread(fn, args).run(runCallback).catch(catchCallback)
 import { Dispatcher } from 'threadman'
 
 // Sets maximum parallel threads count.
-// Defaults to system
+// Defaults to system with 'os.cpus().length'
 Dispatcher.config.threads.maxParallel = os.cpus().length
 
 // Automatically stops the thread after returning the result.

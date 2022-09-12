@@ -5,16 +5,14 @@
 import * as os from 'os'
 
 import Any from './any.js'
+import {
+	DispatcherConfig
+} from './interfaces.js'
 import { Thread } from './thread.js'
 import { Worker } from 'node:worker_threads'
 import { fileURLToPath } from 'url'
 import path from 'path'
 import { setTimeout } from 'timers/promises'
-import {
-	DispatcherConfigThreads,
-	DispatcherConfigLogs,
-	DispatcherConfig
-} from './interfaces.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -62,10 +60,10 @@ class Dispatcher {
 		if (thread.running) thread.stop()
 		thread.running = true
 		thread.startTime = performance.now()
-		;(async () => {
-			if (thread.options.delay) await setTimeout(thread.options.delay)
-			this.#createWorker(thread)
-		})()
+			; (async () => {
+				if (thread.options.delay) await setTimeout(thread.options.delay)
+				this.#createWorker(thread)
+			})()
 	}
 
 	static #createWorker(thread: Thread) {
