@@ -49,12 +49,12 @@ class Dispatcher {
 	static tryRun() {
 		if (!this.queue.length) return
 		if (
-			this.queue.filter((thread) => thread.running === true).length >=
+			this.queue.filter((thread) => thread.running).length >=
 			this.config.threads.maxParallel
 		)
 			return
 		this.queue = this.queue.sort((a, b) => b.priority - a.priority)
-		const thread = this.queue.find((thread) => thread.running === false)
+		const thread = this.queue.find((thread) => !thread.running)
 		if (!thread) return
 		if (thread.running) thread.stop()
 		thread.running = true
@@ -86,11 +86,7 @@ class Dispatcher {
 				' --- ',
 				message
 			)
-		if (
-			thread.options.autoStop !== undefined
-				? thread.options.autoStop
-				: Dispatcher.config.threads.autoStop
-		)
+		if (thread.options.autoStop || Dispatcher.config.threads.autoStop)
 			thread.stop(message, undefined)
 		thread.runCallback?.(message)
 		thread.endTime = performance.now()
