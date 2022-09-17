@@ -16,8 +16,7 @@ class Any {
 			case 'object':
 				if (data == null) return 'null'
 				let i, before, after
-				const indent = prefix + '    ',
-					pieces = []
+				const indent = prefix + '    ', pieces = []
 				if (data instanceof Array) {
 					for (i = 0; i < data.length; i++)
 						pieces.push(Any.encode(data[i], indent))

@@ -1,4 +1,4 @@
-import { Dispatcher, Thread, Pool } from './index.js'
+import { Dispatcher, Pool, Thread } from './index.js'
 Dispatcher.config.logs.enabled = true
 // Dispatcher.config.threads.statistics = true
 

@@ -1,11 +1,11 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { Worker } from 'node:worker_threads'
-import { Background } from './background.js'
-
-import { Dispatcher } from './dispatcher.js'
 import { ThreadEvents, ThreadOptions } from './interfaces.js'
+
+import { Background } from './background.js'
+import { Dispatcher } from './dispatcher.js'
+import { Worker } from 'node:worker_threads'
 
 class Thread extends Background {
 	id?: number
@@ -59,6 +59,10 @@ class Thread extends Background {
 		this.running = false
 		Dispatcher.unregister(this)
 		Dispatcher.tryRun()
+	}
+
+	utilization() {
+		return this.worker?.performance.eventLoopUtilization()
 	}
 }
 

@@ -12,7 +12,6 @@ import { Thread } from './thread.js'
 import { Worker } from 'node:worker_threads'
 import { fileURLToPath } from 'url'
 import path from 'path'
-import { setTimeout } from 'timers/promises'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -60,10 +59,7 @@ class Dispatcher {
 		if (thread.running) thread.stop()
 		thread.running = true
 		thread.startTime = performance.now()
-			; (async () => {
-				if (thread.options.delay) await setTimeout(thread.options.delay)
-				this.#createWorker(thread)
-			})()
+		setTimeout(() => this.#createWorker(thread), thread.options.delay || 0)
 	}
 
 	static #createWorker(thread: Thread) {
