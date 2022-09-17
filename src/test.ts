@@ -6,7 +6,7 @@ const logger = Dispatcher.config.logs.logger
 
 const args = [123, 456]
 const fn = (num1: number, num2: number) => num1 + num2
-const parallel = 2
+const parallel = 50
 const data = args.reduce((c, n) => c + n) * parallel
 
 const callback = (results: any) => {

@@ -59,6 +59,7 @@ class Dispatcher {
 		if (thread.running) thread.stop()
 		thread.running = true
 		thread.startTime = performance.now()
+
 		setTimeout(() => this.#createWorker(thread), thread.options.delay || 0)
 	}
 
@@ -116,7 +117,9 @@ class Dispatcher {
 		if (code !== 0) {
 			const error = new Error(`stopped with ${code} exit code`)
 			thread.stop(undefined, error)
-			thread.catchCallback?.(error)
+
+			// Temporary fix for now until I find causes catchCallback be [Function (anonymous)]
+			// thread.catchCallback?.(error)
 		}
 	}
 
